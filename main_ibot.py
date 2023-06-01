@@ -12,6 +12,8 @@ import time
 import math
 import json
 import numpy as np
+import pydevd_pycharm
+
 import utils
 import models
 import torch
@@ -28,6 +30,16 @@ from tensorboardX import SummaryWriter
 from models.head import iBOTHead
 from loader import ImageFolderMask
 from evaluation.unsupervised.unsup_cls import eval_pred
+
+debug_port = int(os.environ.get("REMOTE_PYCHARM_DEBUG_PORT", 12034))
+if os.environ.get("REMOTE_PYCHARM_DEBUG_SESSION", False):
+    pydevd_pycharm.settrace(
+        "localhost",
+        port=debug_port,
+        stdoutToServer=True,
+        stderrToServer=True,
+        suspend=False,
+    )
 
 def get_args_parser():
     parser = argparse.ArgumentParser('iBOT', add_help=False)
