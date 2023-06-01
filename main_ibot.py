@@ -112,6 +112,8 @@ def get_args_parser():
     parser.add_argument('--freeze_last_layer', default=1, type=int, help="""Number of epochs
         during which we keep the output layer fixed. Typically doing so during
         the first epoch helps training. Try increasing this value if the loss does not decrease.""")
+    parser.add_argument('--grad_from_block', default=0, type=int, help="""Only train the
+            model starting from this stage. The first layers will be frozen.""")
     parser.add_argument("--lr", default=0.0005, type=float, help="""Learning rate at the end of
         linear warmup (highest LR used during training). The learning rate is linearly scaled
         with the batch size, and specified here for a reference batch size of 256.""")
@@ -332,6 +334,22 @@ def train_ibot(args):
             ibot_loss=ibot_loss,
         )
     start_epoch = to_restore["epoch"]
+
+    if args.grad_from_block > 0:
+        for param in student.parameters():
+            param.requires_grad = False
+
+        # From https://github.com/sgvaze/generalized-category-discovery/blob/main/methods/contrastive_training/contrastive_training.py
+        # ----------------------
+        # HOW MUCH OF BASE MODEL TO FINETUNE
+        # ----------------------
+        for name, param in student.named_parameters():
+            if "block" in name:
+                block_num = int(name.split(".")[3])
+                if block_num >= args.grad_from_block:
+                    param.requires_grad = True
+            elif "head" in name:
+                param.requires_grad = True
 
     start_time = time.time()
     print("Starting iBOT training!")
