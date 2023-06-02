@@ -52,5 +52,5 @@ CUB
     --account meinel-mlai \
     --partition sorcery \
     --cpus_per_task 20 \
-    --constraint 'ARCH:PPC'
+    --constraint 'ARCH:X86'
 ```
