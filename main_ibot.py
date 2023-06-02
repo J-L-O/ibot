@@ -386,7 +386,7 @@ def train_ibot(args):
         if fp16_scaler is not None:
             save_dict['fp16_scaler'] = fp16_scaler.state_dict()
         utils.save_on_master(save_dict, os.path.join(args.output_dir, 'checkpoint.pth'))
-        if args.saveckp_freq and (epoch % args.saveckp_freq == 0) and epoch:
+        if args.saveckp_freq and ((epoch + 1) % args.saveckp_freq == 0) and epoch:
             utils.save_on_master(save_dict, os.path.join(args.output_dir, f'checkpoint{epoch:04}.pth'))
         log_stats = {**{f'train_{k}': v for k, v in train_stats.items()},
                      'epoch': epoch}
