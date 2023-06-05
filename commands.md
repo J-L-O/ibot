@@ -53,7 +53,8 @@ CIFAR100
     --account meinel-mlai \
     --partition sorcery \
     --cpus_per_task 20 \
-    --constraint 'ARCH:X86'
+    --constraint 'ARCH:X86' \
+    --timeout 7200
 ```
 
 CUB
