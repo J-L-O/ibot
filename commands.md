@@ -8,7 +8,7 @@ CUB
     --arch vit_base \
     --clip_grad 0.3 \
     --drop_path 0.1 \
-    --epochs 200 \
+    --epochs 400 \
     --saveckp_freq 200 \
     --freeze_last_layer 3 \
     --global_crops_number 2 \
@@ -17,7 +17,7 @@ CUB
     --lambda2 1.0 \
     --local_crops_number 10 \
     --local_crops_scale 0.05 0.32 \
-    --lr 0.00075 \
+    --lr 0.000125 \
     --min_lr 2e-6 \
     --momentum_teacher 0.996 \
     --norm_last_layer true \
