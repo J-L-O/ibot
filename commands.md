@@ -43,7 +43,8 @@ CUB
     --weight_decay_end 0.4 \
     --window_size 7 \
     --grad_from_block 11 \
-    --data_path /hpi/fs00/share/fg-meinel/datasets/GCD-datasets/cub/ \
+    --dataset CUB200 \
+    --data_path /hpi/fs00/share/fg-meinel/datasets/GCD-datasets/cub/CUB_200_2011/images/ \
     --output_dir /hpi/fs00/home/jona.otholt/ibot/finetuning/CUB200/ \
     --load_from pretrained.pth \
     --batch_size_per_gpu 256 \
