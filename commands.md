@@ -1,6 +1,6 @@
 Here we document the commands used to finetune the ImageNet-pretrained DINO model on other datasets.
 
-CUB
+CIFAR100
 
 ```bash
     python run_with_submitit.py \
