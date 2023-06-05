@@ -28,7 +28,7 @@ from torchvision import datasets, transforms
 from torchvision import models as torchvision_models
 from tensorboardX import SummaryWriter
 from models.head import iBOTHead
-from loader import ImageFolderMask
+from loader import ImageFolderMask, CIFAR100Mask, CIFAR10Mask
 from evaluation.unsupervised.unsup_cls import eval_pred
 
 debug_port = int(os.environ.get("REMOTE_PYCHARM_DEBUG_PORT", 12034))
@@ -153,6 +153,7 @@ def get_args_parser():
         Used for small local view cropping of multi-crop.""")
 
     # Misc
+    parser.add_argument('--dataset', default='ImageNet', type=str, help='Dataset to use.')
     parser.add_argument('--data_path', default='/path/to/imagenet/train/', type=str,
         help='Please specify path to the ImageNet training data.')
     parser.add_argument('--output_dir', default=".", type=str, help='Path to save logs and checkpoints.')
@@ -179,15 +180,40 @@ def train_ibot(args):
         args.local_crops_number,
     )
     pred_size = args.patch_size * 8 if 'swin' in args.arch else args.patch_size
-    dataset = ImageFolderMask(
-        args.data_path, 
-        transform=transform,
-        patch_size=pred_size,
-        pred_ratio=args.pred_ratio,
-        pred_ratio_var=args.pred_ratio_var,
-        pred_aspect_ratio=(0.3, 1/0.3),
-        pred_shape=args.pred_shape,
-        pred_start_epoch=args.pred_start_epoch)
+
+    if args.dataset == 'ImageNet' or args.dataset == "CUB200":
+        dataset = ImageFolderMask(
+            args.data_path,
+            transform=transform,
+            patch_size=pred_size,
+            pred_ratio=args.pred_ratio,
+            pred_ratio_var=args.pred_ratio_var,
+            pred_aspect_ratio=(0.3, 1/0.3),
+            pred_shape=args.pred_shape,
+            pred_start_epoch=args.pred_start_epoch)
+    elif args.dataset == 'CIFAR100':
+        dataset = CIFAR100Mask(
+            args.data_path,
+            transform=transform,
+            patch_size=pred_size,
+            pred_ratio=args.pred_ratio,
+            pred_ratio_var=args.pred_ratio_var,
+            pred_aspect_ratio=(0.3, 1/0.3),
+            pred_shape=args.pred_shape,
+            pred_start_epoch=args.pred_start_epoch)
+    elif args.dataset == 'CIFAR10':
+        dataset = CIFAR10Mask(
+            args.data_path,
+            transform=transform,
+            patch_size=pred_size,
+            pred_ratio=args.pred_ratio,
+            pred_ratio_var=args.pred_ratio_var,
+            pred_aspect_ratio=(0.3, 1/0.3),
+            pred_shape=args.pred_shape,
+            pred_start_epoch=args.pred_start_epoch)
+    else:
+        raise NotImplementedError(f"Dataset {args.dataset} is not supported.")
+
     sampler = torch.utils.data.DistributedSampler(dataset, shuffle=True)
     data_loader = torch.utils.data.DataLoader(
         dataset,
