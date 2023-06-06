@@ -9,7 +9,7 @@ CIFAR100
     --clip_grad 0.3 \
     --drop_path 0.1 \
     --epochs 400 \
-    --saveckp_freq 200 \
+    --saveckp_freq 400 \
     --freeze_last_layer 3 \
     --global_crops_number 2 \
     --global_crops_scale 0.32 1.0 \
@@ -66,7 +66,7 @@ CUB
     --clip_grad 0.3 \
     --drop_path 0.1 \
     --epochs 400 \
-    --saveckp_freq 200 \
+    --saveckp_freq 400 \
     --freeze_last_layer 3 \
     --global_crops_number 2 \
     --global_crops_scale 0.32 1.0 \
